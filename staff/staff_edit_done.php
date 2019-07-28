@@ -1,0 +1,50 @@
+<?php
+require('../login_check.php');
+require('../header.php');
+?>
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1>スタッフ修正</h1>
+</div>
+
+<div class="row justify-content-center">
+
+    <div class="col-auto text-center">
+
+        <?php
+
+        try{
+
+            $staff_code=$_POST['code'];
+            $staff_name=$_POST['name'];
+            $staff_pass=$_POST['pass'];
+
+            $staff_name=htmlspecialchars($staff_name);
+            $staff_pass=htmlspecialchars($staff_pass);
+
+            require($_SERVER['DOCUMENT_ROOT'] . '/sakura/db_config.php');
+
+            $sql ='UPDATE mst_staff SET name=?,password=? WHERE code=?';
+            $stmt=$dbh->prepare($sql);
+            $data[]=$staff_name;
+            $data[]=$staff_pass;
+            $data[]=$staff_code;
+            $stmt->execute($data);
+
+            $dbh=null;
+
+        }catch(Exception $e){
+            print'ただいま障害により大変ご迷惑をお掛けしております。';
+            exit();
+        }
+
+        ?>
+
+        <p>修正しました。</p>
+        <a class="btn btn-primary my-5" href="staff_list.php">戻る</a>
+    </div>
+</div>
+
+<?php
+require('../footer.php');
+?>
